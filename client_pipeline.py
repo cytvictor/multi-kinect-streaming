@@ -1,19 +1,21 @@
-import numpy as np
 from mks.capture import MultiCapturer
+from mks.transformation import Transfomation
+from mks.rtc import Rtc
 from mks.k4a.kinect_body_tracker import KinectBodyTracker
 
+
+DEVICE_SEQUENCE = ['A', 'B']
 
 def start_client_pipeline():
   # step1
   capturer = MultiCapturer()
-  devices = capturer.init_cameras(['A', 'B'])
+  devices = capturer.init_cameras(DEVICE_SEQUENCE)
 
-  test_max_frame_count = 10
+  TEST_FRAME_COUNT = 10
   i = 0
   while True:
     # step 2.1 get rgb-d
     captures = capturer.capture_frames()
-    # skeletons = capturer.frame_to_skeleton(frames)
     ret, image = captures[0].get_color_image()
     if not ret:
       continue
@@ -21,17 +23,18 @@ def start_client_pipeline():
     # step 2.2 extract skelecton from rgbd (k4abt); rgbd -> PCD
     skeletons = capturer.get_captures_skeletons(captures)
 
-    # step 2.3 Option1
+    # Option 1 step 2.3 
+    trans_mats = Transfomation.trans_mats_for_skeletons(skeletons)
 
-    # step 2.4 Option1
+    # Option 1 step 2.4
 
-    # step 2.3 Option 2
+    # Option 2 step 2.3 
 
-    # step 2.4 Option 2 plz see merger_pipeline.py
+    # Option 2 step 2.4  plz see server_pipeline.py
 
     # max 10 frames
     i += 1
-    if i == test_max_frame_count:
+    if i == TEST_FRAME_COUNT:
       return
 
 
