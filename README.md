@@ -9,23 +9,21 @@ TransMat: transfomation matrix
 
 **Step1**: Capture: launch camera (k4a)
 
-**Step2 (Option 1)**:
+**Step2**: RGB-Ds to (PCDs, TransMats)
 
 2.1 Capture: get rgb-d (k4a)
 
-2.2 Capture: rgbd to skelecton (k4abt)
+2.2 Capture: extract skelecton from rgbd (k4abt); rgbd -> PCD
 
-2.2 Capture: def icp(skeleton1, skeleton2) -> TransMat
+*(Option 1)*
 
-2.3 Capture: transmit TransMat and PCD to Merger
+2.3 Capture: icp(skeleton1, skeleton2) -> TransMat
 
-**Step2 (Option 2)**:
+2.4 Capture: transmit TransMat and PCD to Merger
 
-2.1 Capture: get rgb-d (k4a)
+*(Option 2)*
 
-2.2 Capture: transmit PCD to Merger
-
-2.3 Merger: rgb-d to skeleton (k4abt)
+2.3 Capture: transmit PCD, skeletons to Merger
 
 2.4 Merger: icp(skeleton1, skeleton2) -> TransMat
 

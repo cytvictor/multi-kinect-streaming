@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Mapping
 import pykinect_azure as pykinect
 
 from mks.utils import logger
@@ -14,13 +14,15 @@ CAM_LABEL_SN = {
 class MultiCapturer:
   def __init__(self) -> None:
     self.devices: List[pykinect.Device] = []
+    self.device_body_trakcers: List[pykinect.Tracker] = []
 
   def init_cameras(self, initialize_label_sequence: List[str]):
-    pykinect.initialize_libraries()
+    pykinect.initialize_libraries(track_body=True)
 
     # using default device configurations
     device_config = pykinect.default_configuration
-    device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_OFF
+    device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_720P
+    device_config.camera_fps = pykinect.K4A_FRAMES_PER_SECOND_30
     device_config.depth_mode = pykinect.K4A_DEPTH_MODE_WFOV_2X2BINNED
 
     device_count = pykinect.Device.device_get_installed_count()
@@ -31,7 +33,7 @@ class MultiCapturer:
                    device_count, len(initialize_label_sequence))
     
     # initialize all devices
-    devices_unsorted = {} # SN -> Device
+    devices_unsorted: Mapping[str, pykinect.Device] = {} # SN -> Device
     for idx in range(device_count):
       device = pykinect.Device(idx)
       sn = device.get_serialnum()
@@ -47,10 +49,33 @@ class MultiCapturer:
 
     for dev in self.devices:
       dev.start(device_config)
+
+      tracker = pykinect.start_body_tracker(calibration=dev.calibration)
+      self.device_body_trakcers.append(tracker)
+    
     logger.info("  Started: master = %s, slaves = %s", initialize_label_sequence[0], initialize_label_sequence[1:])
+    return self.devices
 
 
-  def capture_frames(self): # -> frames
+  def capture_frames(self) -> List[pykinect.Capture]: # -> captures
     # frames = sensor.capture()
     # further_process(frames)
-    pass
+    captures = []
+    for dev in self.devices:
+      capture = dev.update()
+      captures.append(capture)
+    
+    return captures
+  
+  def get_captures_skeletons(self, captures):
+    skeletons = []
+    for i, cap in enumerate(captures):
+      frame = self.device_body_trakcers[i].update(cap)
+      skeleton = None
+      try:
+        skeleton = frame.get_body_skeleton()
+      except Exception as e:
+        logger.debug("No skeleton for this frame!")
+      skeletons.append(skeleton)
+    return skeletons # TODO: support multiple people
+

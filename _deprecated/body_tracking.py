@@ -18,6 +18,7 @@ if __name__ == "__main__":
 	# Start device
 	device = pykinect.start_device(config=device_config)
 
+	print(pykinect.Device.calibration)
 	# Start body tracker
 	bodyTracker = pykinect.start_body_tracker()
 
