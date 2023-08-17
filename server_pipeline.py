@@ -17,11 +17,11 @@ def start_client_pipeline():
     # pcds, skeletons = recv()
 
     # Option 2 step 2.4: icp(skeleton1-6) -> TransMat
-    trans_mats = Transfomation.trans_mats_for_skeletons(skeletons)
+    # trans_mats = Transfomation.trans_mats_for_skeletons(skeletons)
 
     # Step 3 Merger: pcd = merge([PCD1, PCD2, PCD3, PCD4, ...], [TransMat1, TransMat2, TransMat3, ...])
-    
     # Step 4 Render: render(pcd)
+    
 
     # max 10 frames
     i += 1

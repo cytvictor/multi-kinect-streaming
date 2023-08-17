@@ -33,6 +33,6 @@ TransMat = transfomation matrix
     - [ ] 2.4 Merger: icp(skeleton1-6) -> TransMat
 
 
-- [ ] **Step 3**: Merger: pcd = merge([PCD1, PCD2, PCD3, PCD4, ...], [TransMat1, TransMat2, TransMat3, ...])
+- [x] **Step 3**: Merger: pcd = merge([PCD1, PCD2, PCD3, PCD4, ...], [TransMat1, TransMat2, TransMat3, ...])
 
-- [ ] **Step 4**: Render: render(pcd)
+- [x] **Step 4**: Render: render(pcd)
