@@ -20,10 +20,10 @@ TransMat = transfomation matrix
 | ✅    | &nbsp;&nbsp;&nbsp;&nbsp;2.2               | Capture | extract skelecton from rgbd (k4abt); rgbd -> PCD             | CPU bound    |
 |      | &nbsp;&nbsp;&nbsp;&nbsp; _(Option1)_ |         |                                                              |              |
 |      | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3 | Capture | icp(skeleton1, skeleton2) -> TransMat                        |              |
-|      | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.4  | Capture | transmit TransMat and PCD to Merger                          | net io bound |
+| ✅   | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.4  | Capture | transmit TransMat and PCD to Merger                          | net io bound |
 |      | &nbsp;&nbsp;&nbsp;&nbsp; _(Option2)_ |         |                                                              |              |
-|      | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3 | Capture | transmit PCD, skeletons to Merger                            | net io bound |
+| ✅   | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3 | Capture | transmit PCD, skeletons to Merger                            | net io bound |
 |      | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.4 | Merger  | icp(skeleton1-6) -> TransMat                                 |              |
-| ✅    | **Step3**                                 | Merger  | pcd = merge([PCD1, PCD2, PCD3, PCD4, ...], [TransMat1, TransMat2, TransMat3, ...]) | vis quality  |
-| ✅    | **Step4**                                 | Render  | render(pcd)                                                  |              |
+| ✅   | **Step3**                                 | Merger  | pcd = merge([PCD1, PCD2, PCD3, PCD4, ...], [TransMat1, TransMat2, TransMat3, ...]) | vis quality  |
+| ✅   | **Step4**                                 | Render  | render(pcd)                                                  |              |
 
