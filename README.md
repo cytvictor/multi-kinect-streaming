@@ -6,6 +6,20 @@ capture=30fps, CPU5%, virt=4.3G, res=600M
 
 +body tracking = 7-8fps, cpu 80%, virt=7.1G, res=630M
 
+data size / bandwidth (before removing scene backgrounds)
+
+- RGB-D (1280x720) / 1100 Mbps per cam
+  - color.dat 2,701 KB / 648Mbps
+  - depth.dat 1,801 KB / 432Mbps
+
+- PointCloud (82105, points) / 920Mbps per cam
+  - pc_color.dat 1,904 KB / 456Mbps
+  - pc_points.dat 1,904 KB / 456Mbps
+
+- PointCloud (209670 points, 1 person) / 2020Mbps per cam
+  - pc_color.dat 4,206 KB / 1008Mbps
+  - pc_points.dat 4,206 KB / 1008Mbps
+
 ## Glossaries
 
 TransMat = transfomation matrix
