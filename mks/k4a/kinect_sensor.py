@@ -1,5 +1,6 @@
 import pykinect_azure as pykinect
 import open3d as o3d
+import numpy as np
 
 pykinect.initialize_libraries(track_body=True)
 
@@ -36,7 +37,11 @@ class KinectSensor:
     return self.device.update()
 
   def get_capture_pcd(self, capture: pykinect.Capture):
-    rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(capture.get_color_image(), capture.get_depth_image(),
+    ret, color_image = capture.get_color_image()
+    ret, depth_image = capture.get_depth_image()
+    color_image = o3d.geometry.Image(color_image)
+    depth_image = o3d.geometry.Image(color_image)
+    rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(color_image, depth_image,
       convert_rgb_to_intensity=False)
 
     device_calibration_mat = self.device.get_calibration(depth_mode=pykinect.K4A_DEPTH_MODE_NFOV_2X2BINNED,
@@ -54,4 +59,4 @@ class KinectSensor:
                                                                       project_valid_depth_only=True)
 
     point_cloud.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
-    return point_cloud
+    return [np.asarray(point_cloud.points), np.asarray(point_cloud.colors)]

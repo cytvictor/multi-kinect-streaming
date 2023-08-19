@@ -57,10 +57,10 @@ class MultiCapturer:
     
     return captures
   
-  def get_captures_skeletons(self, captures):
+  def get_captures_skeletons(self, captures) -> List[pykinect.k4abt_skeleton_t]:
     skeletons = []
     for i, cap in enumerate(captures):
-      frame = self.devices[i].body_tracker.update(cap)
+      frame = self.devices[i].body_tracker.update()
       skeleton = None
       try:
         skeleton = frame.get_body_skeleton()

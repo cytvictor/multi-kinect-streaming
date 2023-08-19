@@ -16,7 +16,7 @@ if __name__ == "__main__":
 	device_config.depth_mode = pykinect.K4A_DEPTH_MODE_WFOV_2X2BINNED
 
 	# Start device
-	device = pykinect.start_device(config=device_config)
+	device = pykinect.start_device(config=device_config, device_index=int(sys.argv[1]))
 
 	print(pykinect.Device.calibration)
 	# Start body tracker
@@ -39,10 +39,10 @@ if __name__ == "__main__":
 		#print(body_frame)
 
 		# Get the color depth image from the capture
-		# ret, depth_color_image = capture.get_colored_depth_image()
+		ret, depth_color_image = capture.get_colored_depth_image()
 
 		# Get the colored body segmentation
-		# ret, body_image_color = body_frame.get_segmentation_image()
+		ret, body_image_color = body_frame.get_segmentation_image()
 
 		#num_bodies = body_frame.get_num_bodies()
 		#print(num_bodies)
@@ -53,18 +53,18 @@ if __name__ == "__main__":
 		except:
 			continue
 
-		# if not ret:
-		# 	continue
+		if not ret:
+			continue
 			
 		# Combine both images
-		# combined_image = cv2.addWeighted(depth_color_image, 0.6, body_image_color, 0.4, 0)
+		combined_image = cv2.addWeighted(depth_color_image, 0.6, body_image_color, 0.4, 0)
 
 		# Draw the skeletons
-		# combined_image = body_frame.draw_bodies(combined_image)
+		combined_image = body_frame.draw_bodies(combined_image)
 
 		# Overlay body segmentation on depth image
-		# cv2.imshow('Depth image with skeleton',combined_image)
+		cv2.imshow('Depth image with skeleton',combined_image)
 
 		# Press q key to stop
-		# if cv2.waitKey(1) == ord('q'):  
-		# 	break
+		if cv2.waitKey(1) == ord('q'):  
+			break
