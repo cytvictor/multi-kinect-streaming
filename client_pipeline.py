@@ -4,7 +4,6 @@ from mks.transformation import Transfomation
 from mks.mq import MQComm
 from mks.k4a.kinect_body_tracker import KinectBodyTracker
 from mks.utils import save_sample_frame
-import numpy as np
 
 
 DEVICE_SEQUENCE = ['A', 'B']
@@ -23,23 +22,32 @@ def start_client_pipeline():
     ret, image = captures[0].get_color_image()
     if not ret:
       continue
-    
+    # continue
     # step 2.2 extract skelecton from rgbd (k4abt); rgbd -> PCD
     skeletons = capturer.get_captures_skeletons(captures)
+    found_sk = True
+    for sk in skeletons:
+      if sk is None:
+          found_sk = False
+    if not found_sk:
+      continue
+
+    # print(skeletons)
 
     # Save first frame that has skeleton and exit
-    # save_sample_frame(devices, captures, skeletons)
+    save_sample_frame(devices, captures, skeletons, i)
 
     # Option 1 step 2.3 
-    trans_mats = Transfomation.trans_mats_for_skeletons(skeletons)
+    # trans_mats = Transfomation.trans_mats_for_skeletons(skeletons)
 
     # Option 1 step 2.4 Capture: transmit TransMat and PCD to Merger
-    for i, camera_label in enumerate(capturer.label_sequence):
-      mq.emit_frame(camera_label, [devices[i].get_capture_pcd(captures[i]), trans_mats[i - 1] if i > 0 else None])
+    # for idx, camera_label in enumerate(capturer.label_sequence):
+    #   devices[idx].get_capture_pcd(captures[idx])
+      # mq.emit_frame(camera_label, [devices[i].get_capture_pcd(captures[i]), trans_mats[i - 1] if i > 0 else None])
 
     # Option 2 step 2.3 Capture: transmit PCD, skeletons to Merger
-    for i, camera_label in enumerate(capturer.label_sequence):
-      mq.emit_frame(camera_label, [devices[i].get_capture_pcd(captures[i]), skeletons[i]])
+    # for i, camera_label in enumerate(capturer.label_sequence):
+      # mq.emit_frame(camera_label, [devices[i].get_capture_pcd(captures[i]), skeletons[i]])
 
 
     # max 10 frames

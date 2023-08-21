@@ -1,5 +1,6 @@
 from typing import List, Mapping
 import pykinect_azure as pykinect
+import numpy as np
 
 from mks.k4a.kinect_sensor import KinectSensor, SensorSdk
 from mks.utils import logger
@@ -11,6 +12,21 @@ CAM_LABEL_SN = {
   'C': 'SNXXXX3',
   'D': 'SNXXXX4',
 }
+
+
+def skeleton_to_array(skeleton: pykinect.k4abt_skeleton_t) -> list:
+  if skeleton is None:
+    return
+  joint: pykinect.k4abt_joint_t = None
+  positions = []
+  for joint in skeleton.joints:
+    positions.append({
+      'position': (joint.position.xyz.x, joint.position.xyz.y, joint.position.xyz.z), 
+      'orientation': (joint.orientation.wxyz.w, joint.orientation.wxyz.x, joint.orientation.wxyz.y, joint.orientation.wxyz.z), 
+      'confidence_level': joint.confidence_level
+    })
+  return positions
+
 
 class MultiCapturer:
   def __init__(self) -> None:
@@ -53,6 +69,7 @@ class MultiCapturer:
     captures = []
     for dev in self.devices:
       capture = dev.capture()
+      print(capture)
       captures.append(capture)
     
     return captures
@@ -60,12 +77,13 @@ class MultiCapturer:
   def get_captures_skeletons(self, captures) -> List[pykinect.k4abt_skeleton_t]:
     skeletons = []
     for i, cap in enumerate(captures):
-      frame = self.devices[i].body_tracker.update()
+      # frame = self.devices[i].body_tracker.update(cap)
+      frame = self.devices[i].body_tracker.update(cap)
       skeleton = None
       try:
         skeleton = frame.get_body_skeleton()
       except Exception as e:
         logger.debug("No skeleton for the frame captured on %s!", self.label_sequence[i])
-      skeletons.append(skeleton)
+      skeletons.append(skeleton_to_array(skeleton))
     return skeletons # TODO: now get the 0th person skeleton; support multiple people
 

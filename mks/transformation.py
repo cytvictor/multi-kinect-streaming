@@ -1,4 +1,5 @@
 import numpy as np
+from mks.pcdUtils import icp_registration_skeleton
 
 
 class Transfomation:
@@ -12,6 +13,7 @@ class Transfomation:
 
   @staticmethod
   def skeleton_icp(skeleton1, skeleton2):
+    return icp_registration_skeleton(skeleton1, skeleton2)
     return np.zeros((4, 4))
 
   @staticmethod
