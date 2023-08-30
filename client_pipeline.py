@@ -35,10 +35,12 @@ def start_client_pipeline():
     # print(skeletons)
 
     # Save first frame that has skeleton and exit
-    save_sample_frame(devices, captures, skeletons, i)
+    # save_sample_frame(devices, captures, skeletons, i)
 
     # Option 1 step 2.3 
-    # trans_mats = Transfomation.trans_mats_for_skeletons(skeletons)
+    trans_mats = Transfomation.trans_mats_for_skeletons(skeletons)
+    # print(trans_mats)
+    # exit()
 
     # Option 1 step 2.4 Capture: transmit TransMat and PCD to Merger
     # for idx, camera_label in enumerate(capturer.label_sequence):

@@ -56,7 +56,7 @@ def save_sample_frame(devices, captures, skeletons, i = 0):
   np.save(f'frame-{i}-point_cloud_0-colors', np.asarray(pcd0[1]))
   np.save(f'frame-{i}-point_cloud_1-points', np.asarray(pcd1[0]))
   np.save(f'frame-{i}-point_cloud_1-colors', np.asarray(pcd1[1]))
-  with open(f'frame-{i}-skeleton_0', 'w+') as fp:
+  with open(f'frame-{i}-skeleton_0.json', 'w+') as fp:
     json.dump(skeletons, fp)
 
   # print(np.asarray(skeletons[0].joints))
