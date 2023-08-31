@@ -9,8 +9,10 @@ from mks.utils import logger
 CAM_LABEL_SN = {
   'A': '000502714412',
   'B': '000431614412',
-  'C': 'SNXXXX3',
-  'D': 'SNXXXX4',
+  'C': '000966714112',
+  'D': '000456614412',
+  'E': '000508114412',
+  'F': 'xxxxx',
 }
 
 
@@ -69,7 +71,7 @@ class MultiCapturer:
     captures = []
     for dev in self.devices:
       capture = dev.capture()
-      print(capture)
+      # print(capture)
       captures.append(capture)
     
     return captures

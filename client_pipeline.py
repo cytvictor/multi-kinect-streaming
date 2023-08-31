@@ -4,9 +4,10 @@ from mks.transformation import Transfomation
 from mks.mq import MQComm
 from mks.k4a.kinect_body_tracker import KinectBodyTracker
 from mks.utils import save_sample_frame
+import sys
 
 
-DEVICE_SEQUENCE = ['A', 'B']
+DEVICE_SEQUENCE = list(sys.argv[1]) if len(sys.argv) == 2 else ['A', 'B']
 
 def start_client_pipeline():
   # step1
