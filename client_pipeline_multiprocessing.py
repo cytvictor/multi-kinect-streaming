@@ -4,23 +4,25 @@ from mks.transformation import Transfomation
 from mks.mq import MQComm
 from mks.k4a.kinect_body_tracker import KinectBodyTracker
 from mks.utils import save_sample_frame
-import sys
-
+from time import time
 
 DEVICE_SEQUENCE = list(sys.argv[1]) if len(sys.argv) == 2 else ['A', 'B']
 
 def start_client_pipeline():
   # step1
   capturer = MultiCapturer()
-  # mq = MQComm()
+  mq = MQComm()
   devices = capturer.init_cameras(DEVICE_SEQUENCE)
 
   TEST_FRAME_COUNT = 10
   i = 0
   while True:
     # step 2.1 get rgb-d
+    ts = time()
     captures = capturer.capture_frames()
     ret, image = captures[0].get_color_image()
+    print(ts)
+    continue
     if not ret:
       continue
     # continue
@@ -36,12 +38,12 @@ def start_client_pipeline():
     # print(skeletons)
 
     # Save first frame that has skeleton and exit
-    save_sample_frame(devices, captures, skeletons, i)
+    # save_sample_frame(devices, captures, skeletons, i)
 
     # Option 1 step 2.3 
     trans_mats = Transfomation.trans_mats_for_skeletons(skeletons)
     # print(trans_mats)
-    exit()
+    # exit()
 
     # Option 1 step 2.4 Capture: transmit TransMat and PCD to Merger
     # for idx, camera_label in enumerate(capturer.label_sequence):

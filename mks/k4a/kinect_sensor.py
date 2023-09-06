@@ -73,7 +73,7 @@ class KinectSensor:
     colors = cv2.cvtColor(color_image, cv2.COLOR_BGRA2RGB).reshape(-1, 3) / 255
     point_cloud.colors = o3d.utility.Vector3dVector(colors)
 
-    point_cloud.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+    # point_cloud.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
 
     if not self.o3d_started:
       self.vis.add_geometry(point_cloud)
