@@ -1,6 +1,7 @@
 import logging
 import numpy as np
 import json
+from .pcdUtils import save_ply
 
 
 
@@ -52,10 +53,12 @@ def save_sample_frame(devices, captures, skeletons, i = 0):
   # np.save(f'frame-{i}-depth_1', np.asarray(depth1))
   pcd0 = devices[0].get_capture_pcd(captures[0])
   pcd1 = devices[0].get_capture_pcd(captures[1])
-  np.save(f'frame-{i}-point_cloud_0-points', np.asarray(pcd0[0]))
-  np.save(f'frame-{i}-point_cloud_0-colors', np.asarray(pcd0[1]))
-  np.save(f'frame-{i}-point_cloud_1-points', np.asarray(pcd1[0]))
-  np.save(f'frame-{i}-point_cloud_1-colors', np.asarray(pcd1[1]))
+  save_ply(pcd0[0], pcd0[1], f'frame-{i}-point_cloud_0.ply')
+  save_ply(pcd1[0], pcd1[1], f'frame-{i}-point_cloud_1.ply')
+  # np.save(f'frame-{i}-point_cloud_0-points', np.asarray(pcd0[0]))
+  # np.save(f'frame-{i}-point_cloud_0-colors', np.asarray(pcd0[1]))
+  # np.save(f'frame-{i}-point_cloud_1-points', np.asarray(pcd1[0]))
+  # np.save(f'frame-{i}-point_cloud_1-colors', np.asarray(pcd1[1]))
   with open(f'frame-{i}-skeleton_0.json', 'w+') as fp:
     json.dump(skeletons, fp)
 
