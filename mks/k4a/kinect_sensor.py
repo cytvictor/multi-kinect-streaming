@@ -16,12 +16,13 @@ class SensorSdk:
     return pykinect.Device.device_get_installed_count()
 
 class KinectSensor:
-  def __init__(self, device_index=0) -> None:
+  def __init__(self, device_index=0, label="") -> None:
     self.device = pykinect.Device(device_index)
     self.vis = o3d.visualization.Visualizer()
     self.vis.create_window()
     self.body_tracker: pykinect.Tracker = None
     self.o3d_started = False
+    self.label = label
     pass
 
   def get_serialnum(self):

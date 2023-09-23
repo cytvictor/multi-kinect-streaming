@@ -48,7 +48,7 @@ class MultiCapturer:
     # initialize all devices
     devices_unsorted: Mapping[str, KinectSensor] = {} # SN -> Device
     for idx in range(device_count):
-      device = KinectSensor(idx)
+      device = KinectSensor(idx, self.label_sequence[idx])
       sn = device.get_serialnum()
       devices_unsorted[sn] = device
       logger.info("  Device %d: SN %s", idx, sn)

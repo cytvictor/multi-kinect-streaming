@@ -51,15 +51,19 @@ def save_sample_frame(devices, captures, skeletons, i = 0):
   # ret, depth1 = captures[1].get_depth_image()
   # np.save(f'frame-{i}-depth_0', np.asarray(depth0))
   # np.save(f'frame-{i}-depth_1', np.asarray(depth1))
-  pcd0 = devices[0].get_capture_pcd(captures[0])
-  pcd1 = devices[0].get_capture_pcd(captures[1])
-  save_ply(pcd0[0], pcd0[1], f'frame-{i}-point_cloud_0.ply')
-  save_ply(pcd1[0], pcd1[1], f'frame-{i}-point_cloud_1.ply')
+  for i, capture in enumerate(captures):
+
+    pcd0 = devices[i].get_capture_pcd(captures[i])
+  # pcd1 = devices[0].get_capture_pcd(captures[1])
+    save_ply(pcd0[0], pcd0[1], f'frame-{i}-point_cloud_{devices[i].label}.ply')
+  # save_ply(pcd1[0], pcd1[1], f'frame-{i}-point_cloud_1.ply')
   # np.save(f'frame-{i}-point_cloud_0-points', np.asarray(pcd0[0]))
   # np.save(f'frame-{i}-point_cloud_0-colors', np.asarray(pcd0[1]))
   # np.save(f'frame-{i}-point_cloud_1-points', np.asarray(pcd1[0]))
   # np.save(f'frame-{i}-point_cloud_1-colors', np.asarray(pcd1[1]))
-  with open(f'frame-{i}-skeleton_0.json', 'w+') as fp:
+  labels = "".join(dev.label for dev in devices)
+
+  with open(f'frame-{i}-skeleton_{labels}.json', 'w+') as fp:
     json.dump(skeletons, fp)
 
   # print(np.asarray(skeletons[0].joints))
